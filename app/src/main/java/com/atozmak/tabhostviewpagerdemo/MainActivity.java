@@ -1,0 +1,143 @@
+package com.atozmak.tabhostviewpagerdemo;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.HorizontalScrollView;
+import android.widget.TabHost;
+
+import com.atozmak.tabhostviewpagerdemo.adapters.MyFrgmPagerAdapter;
+import com.atozmak.tabhostviewpagerdemo.fragments.Fragment01;
+import com.atozmak.tabhostviewpagerdemo.fragments.Fragment02;
+import com.atozmak.tabhostviewpagerdemo.fragments.Fragment03;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * TabHost and ViewPager by https://www.youtube.com/watch?v=GxEi_I3tv2k
+ */
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, TabHost.OnTabChangeListener {
+
+    private ViewPager mViewPager;
+    private List<Fragment> listFrgms;
+    private MyFrgmPagerAdapter adapter;
+    private TabHost tabHost;
+    private HorizontalScrollView horizontalScrollView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initViewPager();
+        initTabHost();
+    }
+
+    private void initTabHost() {
+
+        tabHost = (TabHost) findViewById(R.id.tabHost);
+        tabHost.setup();
+
+        String[] tabNames = {"tab01", "tab02", "tab03", "tab04", "tab5", "tab06", "tab07"};
+
+        for (int i = 0; i < tabNames.length; i++) {
+            TabHost.TabSpec tabSpec;
+            tabSpec = tabHost.newTabSpec(tabNames[i]);
+            tabSpec.setIndicator(tabNames[i]);
+            tabSpec.setContent(new FakeContent(getApplicationContext()));
+            tabHost.addTab(tabSpec);
+
+        }
+        tabHost.setOnTabChangedListener(this);
+
+        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalView);
+    }
+
+    private void initViewPager() {
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        listFrgms = new ArrayList<>();
+        listFrgms.add(new Fragment01());
+        listFrgms.add(new Fragment02());
+        listFrgms.add(new Fragment03());
+        listFrgms.add(new Fragment01());
+        listFrgms.add(new Fragment02());
+        listFrgms.add(new Fragment03());
+        listFrgms.add(new Fragment03());
+
+        adapter = new MyFrgmPagerAdapter(getSupportFragmentManager(), listFrgms);
+        mViewPager.setAdapter(adapter);
+        mViewPager.setOnPageChangeListener(this);
+    }
+    //--------------------------------------------------------
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int selectedPage) {
+        tabHost.setCurrentTab(selectedPage);
+    }
+
+    //viewpager listener
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    //tab listener
+    @Override
+    public void onTabChanged(String tabId) {
+        int selectedItem = tabHost.getCurrentTab();
+        mViewPager.setCurrentItem(selectedItem);
+
+        View tabView = tabHost.getCurrentTabView();
+        //scrollPos等于那个需要移动的view要移动的路程
+        //现在看得不是很明白，要看看smoothScrollBy的源码才知道。先记住吧。
+        //http://blog.csdn.net/crazy__chen/article/details/47174897
+        int scrollPos = tabView.getLeft()
+                - (horizontalScrollView.getWidth() - tabView.getWidth()) / 2;
+        horizontalScrollView.smoothScrollTo(scrollPos, 0);
+
+
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        Log.v("TAG", "screenWidth=" + screenWidth);//screenWidth=1080
+
+        Log.v("TAG", "horizontalScrollView.getWidth()="
+                + horizontalScrollView.getWidth()); //horizontalScrollView.getWidth()=1080
+
+        Log.v("TAG", "tabView.getWidth()=" + tabView.getWidth());//tabView.getWidth()=240
+    }
+
+    //--------------------------------------------------------
+
+    public class FakeContent implements TabHost.TabContentFactory {
+
+        Context context;
+
+        public FakeContent(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public View createTabContent(String tag) {
+
+            View fakeView = new View(context);
+            fakeView.setMinimumHeight(0);
+            fakeView.setMinimumWidth(0);
+
+            return fakeView;
+
+        }
+    }
+
+    //--------------------------------------------------------
+
+
+}
