@@ -6,9 +6,15 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="60sp"
-        android:text="frgm 01" />
+        android:text="frgm 01"
+        android:textSize="60sp" />
+
+    <Button
+        android:id="@+id/btn_anim"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="btn_anim" />
 
 </LinearLayout>

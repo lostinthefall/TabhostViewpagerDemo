@@ -6,21 +6,49 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.widget.Button;
 
 import com.atozmak.tabhostviewpagerdemo.R;
 
 /**
  * Created by Mak on 2016/4/5.
  */
-public class Fragment01 extends Fragment {
+public class Fragment01 extends Fragment implements View.OnClickListener {
+
+    private Button btnAnim;
+    private AnimationSet animationSet;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_01, container, false);
 
+        init(v);
+        initAnim();
 
-        View v = inflater.inflate(R.layout.fragment_01, container,false);
+        btnAnim.setOnClickListener(this);
 
         return v;
+    }
+
+    private void initAnim() {
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 360,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setDuration(1000);
+
+        animationSet = new AnimationSet(true);
+        animationSet.setDuration(1000);
+        animationSet.addAnimation(rotateAnimation);
+    }
+
+    private void init(View v) {
+        btnAnim = (Button) v.findViewById(R.id.btn_anim);
+    }
+
+    @Override
+    public void onClick(View v) {
+        v.startAnimation(animationSet);
     }
 }
