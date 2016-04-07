@@ -6,9 +6,15 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="frgm 03"
+        android:text="frgm 04"
         android:textSize="60sp" />
+
+    <ListView
+        android:id="@+id/lvContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
 
 </LinearLayout>

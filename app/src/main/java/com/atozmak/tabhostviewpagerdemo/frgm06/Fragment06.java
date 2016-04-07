@@ -1,4 +1,4 @@
-package com.atozmak.tabhostviewpagerdemo.fragments;
+package com.atozmak.tabhostviewpagerdemo.frgm06;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,14 +12,14 @@ import com.atozmak.tabhostviewpagerdemo.R;
 /**
  * Created by Mak on 2016/4/5.
  */
-public class Fragment05 extends Fragment {
+public class Fragment06 extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        View v = inflater.inflate(R.layout.fragment_05, container,false);
+        View v = inflater.inflate(R.layout.fragment_06, container,false);
 
         return v;
     }

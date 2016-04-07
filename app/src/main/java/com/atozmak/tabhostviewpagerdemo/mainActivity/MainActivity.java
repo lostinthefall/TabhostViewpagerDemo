@@ -1,4 +1,4 @@
-package com.atozmak.tabhostviewpagerdemo;
+package com.atozmak.tabhostviewpagerdemo.mainActivity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,10 +10,14 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.TabHost;
 
-import com.atozmak.tabhostviewpagerdemo.adapters.MyFrgmPagerAdapter;
-import com.atozmak.tabhostviewpagerdemo.fragments.Fragment01;
-import com.atozmak.tabhostviewpagerdemo.fragments.Fragment02;
-import com.atozmak.tabhostviewpagerdemo.fragments.Fragment03;
+import com.atozmak.tabhostviewpagerdemo.R;
+import com.atozmak.tabhostviewpagerdemo.mainActivity.MyFrgmPagerAdapter;
+import com.atozmak.tabhostviewpagerdemo.frgm01.Fragment01;
+import com.atozmak.tabhostviewpagerdemo.frgm02.Fragment02;
+import com.atozmak.tabhostviewpagerdemo.frgm03.Fragment03;
+import com.atozmak.tabhostviewpagerdemo.frgm04.Fragment04;
+import com.atozmak.tabhostviewpagerdemo.frgm05.Fragment05;
+import com.atozmak.tabhostviewpagerdemo.frgm06.Fragment06;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private MyFrgmPagerAdapter adapter;
     private TabHost tabHost;
     private HorizontalScrollView horizontalScrollView;
+    private int SET_PAGE = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +45,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     }
 
     private void initPage() {
-        int currentPosition = 2;
+        int currentPosition = SET_PAGE - 1;
         mViewPager.setCurrentItem(currentPosition);
         tabHost.setCurrentTab(currentPosition);
+        View tabView = tabHost.getCurrentTabView();
+        int scrollPos = tabView.getLeft()
+                - (horizontalScrollView.getWidth() - tabView.getWidth()) / 2;
+        horizontalScrollView.smoothScrollTo(scrollPos, 0);
     }
 
     private void initTabHost() {
@@ -50,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
 
-        String[] tabNames = {"tab01", "tab02", "tweenAnim", "tab04", "tab5", "tab06", "tab07"};
+        String[] tabNames = {"tab01", "属性动画", "tween_drawable", "自定义tween(弃用)", "tab5", "tab06", "tab07"};
 
         for (int i = 0; i < tabNames.length; i++) {
             TabHost.TabSpec tabSpec;
@@ -70,9 +79,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         listFrgms.add(new Fragment01());
         listFrgms.add(new Fragment02());
         listFrgms.add(new Fragment03());
-        listFrgms.add(new Fragment01());
-        listFrgms.add(new Fragment02());
-        listFrgms.add(new Fragment03());
+        listFrgms.add(new Fragment04());
+        listFrgms.add(new Fragment05());
+        listFrgms.add(new Fragment06());
         listFrgms.add(new Fragment03());
 
         adapter = new MyFrgmPagerAdapter(getSupportFragmentManager(), listFrgms);

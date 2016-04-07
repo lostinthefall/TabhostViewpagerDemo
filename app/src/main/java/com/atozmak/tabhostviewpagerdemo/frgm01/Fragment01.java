@@ -1,4 +1,4 @@
-package com.atozmak.tabhostviewpagerdemo.fragments;
+package com.atozmak.tabhostviewpagerdemo.frgm01;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

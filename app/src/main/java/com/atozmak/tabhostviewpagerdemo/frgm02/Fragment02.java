@@ -1,6 +1,7 @@
-package com.atozmak.tabhostviewpagerdemo.fragments;
+package com.atozmak.tabhostviewpagerdemo.frgm02;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
@@ -20,7 +21,7 @@ import com.atozmak.tabhostviewpagerdemo.R;
  */
 public class Fragment02 extends Fragment {
 
-    private Button btnAnimProperty, btnAnimNoTypeEvaluator, btnAnimTypeEvaluator, btn3;
+    private Button btnAnimProperty, btnAnimNoTypeEvaluator, btnAnimTypeEvaluator, btn3, btnAnimSet;
 
     @Nullable
     @Override
@@ -35,6 +36,7 @@ public class Fragment02 extends Fragment {
         btnAnimTypeEvaluator.setOnClickListener(typeEvaluatorListener);
         btnAnimNoTypeEvaluator.setOnClickListener(noTypeEvaluatorListener);
         btn3.setOnClickListener(btn3Listener);
+        btnAnimSet.setOnClickListener(btnAnimSetListener);
 
         return v;
     }
@@ -44,8 +46,26 @@ public class Fragment02 extends Fragment {
         btnAnimTypeEvaluator = (Button) v.findViewById(R.id.btnAnimTypeEvaluator);
         btnAnimNoTypeEvaluator = (Button) v.findViewById(R.id.btnAnimNoTypeEvaluator);
         btn3 = (Button) v.findViewById(R.id.btn3);
+        btnAnimSet = (Button) v.findViewById(R.id.btnAnimSet);
     }
 
+    View.OnClickListener btnAnimSetListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ObjectAnimator o1 = ObjectAnimator.ofFloat(v, "rotation", 90, 0);
+            ObjectAnimator o2 = ObjectAnimator.ofFloat(v, "rotationX", 90, 0);
+            ObjectAnimator o3 = ObjectAnimator.ofFloat(v, "alpha", 0, 1);
+            AnimatorSet as = new AnimatorSet();
+            //在3d旋转之后2d旋转。
+            // as.play(o1).after(o2);
+           // as.playTogether(o1, o2, o3);
+            as.playTogether( o2, o3);
+            as.setDuration(2000);
+            as.start();
+
+
+        }
+    };
     View.OnClickListener propertyListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -67,7 +87,7 @@ public class Fragment02 extends Fragment {
     private void anotherTest(View v) {
 
         //属性动画在哪里改变旋转中心的值。
-        ObjectAnimator.ofFloat(v, "rotation", 0,360).setDuration(1000).start();
+        ObjectAnimator.ofFloat(v, "rotation", 0, 360).setDuration(1000).start();
 
 
    /*     ValueAnimator va = ValueAnimator.ofFloat(0, 1);

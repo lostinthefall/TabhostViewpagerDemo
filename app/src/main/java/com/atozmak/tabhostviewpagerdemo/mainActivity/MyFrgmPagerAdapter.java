@@ -1,4 +1,4 @@
-package com.atozmak.tabhostviewpagerdemo.adapters;
+package com.atozmak.tabhostviewpagerdemo.mainActivity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

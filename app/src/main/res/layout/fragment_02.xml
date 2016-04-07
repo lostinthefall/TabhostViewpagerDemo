@@ -17,6 +17,14 @@
         android:layout_height="50dp"
         android:text="btn_anim_property" />
 
+    <Button
+        android:id="@+id/btnAnimSet"
+        android:layout_width="180dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="btnAnimSet" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -28,20 +36,23 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="ObjAnim_without_typeEvaluator" />
+            android:gravity="center"
+            android:text="没typeEvaluator" />
 
         <Button
             android:id="@+id/btnAnimTypeEvaluator"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="ObjAnim_with_typeEvaluator" />
+            android:gravity="center"
+            android:text="有typeEvaluator" />
 
         <Button
             android:id="@+id/btn3"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="btn3-hihihihihihihihi" />
 
 
