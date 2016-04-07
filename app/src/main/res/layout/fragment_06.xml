@@ -9,6 +9,66 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="frgm 06"
-        android:textSize="60sp" />
+        android:textSize="20sp" />
 
+    <com.atozmak.tabhostviewpagerdemo.frgm06.CustomView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorPrimary" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvRectShape"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                android:background="#888888" />
+
+            <TextView
+                android:id="@+id/tvRoundRectShape"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                android:background="#888888"
+
+                />
+
+            <TextView
+                android:id="@+id/tvOvalShape"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                android:background="#888888" />
+
+            <TextView
+                android:id="@+id/tvArcShape"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                android:background="#888888" />
+
+            <TextView
+                android:id="@+id/tvPathShape"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                android:background="#888888" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>

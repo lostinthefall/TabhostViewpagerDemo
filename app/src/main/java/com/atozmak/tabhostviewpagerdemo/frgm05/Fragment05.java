@@ -94,18 +94,20 @@ public class Fragment05 extends Fragment {
             fallAnim.addUpdateListener(this);
             // 定义对newBall对象的alpha属性执行从1到0的动画（即定义渐隐动画）
             ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(newBall
-                    , "alpha", 1f, 0f);
+                    , "alpha", 1f, 1f);
             // 设置动画持续时间
             fadeAnim.setDuration(250);
+
             // 为fadeAnim动画添加监听器
-            fadeAnim.addListener(new AnimatorListenerAdapter() {
+/*            fadeAnim.addListener(new AnimatorListenerAdapter() {
                 // 当动画结束时
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     // 动画结束时将该动画关联的ShapeHolder删除
                     balls.remove(((ObjectAnimator) animation).getTarget());
                 }
-            });
+            });*/
+
             // 为fadeAnim动画添加监听器
             // 当ValueAnimator的属性值发生改变时，将会激发该监听器的事件监听方法
             fadeAnim.addUpdateListener(this);
@@ -119,40 +121,50 @@ public class Fragment05 extends Fragment {
         }
 
         private ShapeHolder addBall(float x, float y) {
+
             // 创建一个椭圆
             // java.lang.Object
             //   ↳	android.graphics.drawable.shapes.Shape
             //   ↳	android.graphics.drawable.shapes.RectShape
             //   ↳	android.graphics.drawable.shapes.OvalShape
             OvalShape circle = new OvalShape();
+
             // 设置该椭圆的宽、高
             // Resizes the dimensions of this shape.
             circle.resize(BALL_SIZE, BALL_SIZE);
+
             // 将椭圆包装成Drawable对象
             ShapeDrawable drawable = new ShapeDrawable(circle);
+
             // 创建一个ShapeHolder对象
             ShapeHolder shapeHolder = new ShapeHolder(drawable);
+
             // 设置ShapeHolder的x、y坐标
             shapeHolder.setX(x - BALL_SIZE / 2);
             shapeHolder.setY(y - BALL_SIZE / 2);
-            int red = (int) (Math.random() * 255);
-            int green = (int) (Math.random() * 255);
-            int blue = (int) (Math.random() * 255);
+
+            int red = (int) (Math.random() * 2550);
+            int green = (int) (Math.random() * 2550);
+            int blue = (int) (Math.random() * 2550);
             // 将red、green、blue三个随机数组合成ARGB颜色
             int color = 0xff000000 + red << 16 | green << 8 | blue;
+
             // 获取drawable上关联的画笔
             Paint paint = drawable.getPaint();
             // 将red、green、blue三个随机数除以4得到商值组合成ARGB颜色
             int darkColor = 0xff000000 | red / 4 << 16
                     | green / 4 << 8 | blue / 4;
+
             // 创建圆形渐变
             RadialGradient gradient = new RadialGradient(
                     37.5f, 12.5f, BALL_SIZE, color, darkColor
                     , Shader.TileMode.CLAMP);
             paint.setShader(gradient);
+
             // 为shapeHolder设置paint画笔
             shapeHolder.setPaint(paint);
             balls.add(shapeHolder);
+
             return shapeHolder;
         }
 
