@@ -36,6 +36,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         initViewPager();
         initTabHost();
+        initPage();
+    }
+
+    private void initPage() {
+        int currentPosition = 2;
+        mViewPager.setCurrentItem(currentPosition);
+        tabHost.setCurrentTab(currentPosition);
     }
 
     private void initTabHost() {
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
 
-        String[] tabNames = {"tab01", "tab02", "tab03", "tab04", "tab5", "tab06", "tab07"};
+        String[] tabNames = {"tab01", "tab02", "tweenAnim", "tab04", "tab5", "tab06", "tab07"};
 
         for (int i = 0; i < tabNames.length; i++) {
             TabHost.TabSpec tabSpec;
@@ -51,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             tabSpec.setIndicator(tabNames[i]);
             tabSpec.setContent(new FakeContent(getApplicationContext()));
             tabHost.addTab(tabSpec);
-
         }
         tabHost.setOnTabChangedListener(this);
 

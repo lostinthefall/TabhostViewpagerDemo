@@ -15,10 +15,11 @@ import com.atozmak.tabhostviewpagerdemo.R;
 /**
  * Created by Mak on 2016/4/5.
  */
-public class Fragment01 extends Fragment implements View.OnClickListener {
+public class Fragment01 extends Fragment {
 
-    private Button btnAnim;
+    private Button btnAnimTween;
     private AnimationSet animationSet;
+
 
     @Nullable
     @Override
@@ -28,7 +29,8 @@ public class Fragment01 extends Fragment implements View.OnClickListener {
         init(v);
         initAnim();
 
-        btnAnim.setOnClickListener(this);
+        btnAnimTween.setOnClickListener(tweenListener);
+
 
         return v;
     }
@@ -44,11 +46,17 @@ public class Fragment01 extends Fragment implements View.OnClickListener {
     }
 
     private void init(View v) {
-        btnAnim = (Button) v.findViewById(R.id.btn_anim);
+        btnAnimTween = (Button) v.findViewById(R.id.btnAnimTween);
+
     }
 
-    @Override
-    public void onClick(View v) {
-        v.startAnimation(animationSet);
-    }
+    View.OnClickListener tweenListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            v.startAnimation(animationSet);
+        }
+    };
+
+
+
 }
