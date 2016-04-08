@@ -29,10 +29,9 @@
     </android.support.percent.PercentFrameLayout>
 
     <com.atozmak.tabhostviewpagerdemo.frgm07.LikeButtonView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1" />
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center" />
 
 
 </LinearLayout>

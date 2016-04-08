@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Property;
 import android.view.View;
 
 /**
@@ -61,11 +62,112 @@ public class CircleView extends View {
         mArgbEvaluator = new ArgbEvaluator();
     }
 
+    //---------------------------------------------------
+
+    // onMeasure结束后会调用onSizeChanged。
+    //* @param w Current width of this view.
+    //* @param h Current height of this view.
+    //* @param oldw Old width of this view.
+    //* @param oldh Old height of this view.
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
-
-
+        mMaxCircleSize = w / 2;
+        mTempBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        mTempCanvas = new Canvas(mTempBitmap);
     }
+
+    //---------------------------------------------------
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        mTempCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
+
+        mTempCanvas.drawCircle(
+                getWidth() / 2,
+                getHeight() / 2,
+                mOuterCircleRadiusProgress * mMaxCircleSize,
+                mCirclePaint
+        );
+        mTempCanvas.drawCircle(
+                getWidth() / 2,
+                getHeight() / 2,
+                mInnerCircleRadiusProgress * mMaxCircleSize,
+                mMaskPaint
+        );
+        canvas.drawBitmap(mTempBitmap, 0, 0, null);
+    }
+
+    //---------------------------------------------------
+
+    public float getOuterCircleRadiusProgress() {
+        return mOuterCircleRadiusProgress;
+    }
+
+    public void setOuterCircleRadiusProgress(float outerCircleRadiusProgress) {
+        mOuterCircleRadiusProgress = outerCircleRadiusProgress;
+        updateCircleColor();
+        postInvalidate();
+    }
+
+    // 更新圆圈的颜色变化
+    private void updateCircleColor() {
+
+        // 0.5到1颜色渐变
+        float colorProgress = (float) ProAnimUtils.clamp(
+                mOuterCircleRadiusProgress, 0.5, 1
+        );
+
+        //转换映射控件
+        colorProgress = (float) ProAnimUtils.mapValueFromRangeToRange(
+                colorProgress, 0.5f, 1f, 0f, 1f
+        );
+        mCirclePaint.setColor((Integer) mArgbEvaluator.evaluate(colorProgress, START_COLOR, END_COLOR));
+    }
+
+    public float getInnerCircleRadiusProgress() {
+        return mInnerCircleRadiusProgress;
+    }
+
+    public void setInnerCircleRadiusProgress(float innerCircleRadiusProgress) {
+        mInnerCircleRadiusProgress = innerCircleRadiusProgress;
+        postInvalidate();
+    }
+
+    //---------------------------------------------------
+
+    // <T> The class on which the property is declared.  <V> The type that this property represents.
+    public static final Property<CircleView, Float> INNER_CIRCLE_RADIUS_PROGRESS =
+
+            //public Property(Class<V> type, String name)
+            new Property<CircleView, Float>(Float.class, "innerCircleRadiusProgress") {
+
+                // public abstract V get(T object);
+                @Override
+                public Float get(CircleView object) {
+                    return object.getInnerCircleRadiusProgress();
+                }
+
+                // public void set(T object, V value)
+                @Override
+                public void set(CircleView object, Float value) {
+                    object.setInnerCircleRadiusProgress(value);
+                }
+            };
+
+    public static final Property<CircleView, Float> OUTER_CIRCLE_RADIUS_PROGRESS =
+            new Property<CircleView, Float>(Float.class, "outerCircleRadiusProgress") {
+                @Override
+                public Float get(CircleView object) {
+                    return object.getOuterCircleRadiusProgress();
+                }
+
+                @Override
+                public void set(CircleView object, Float value) {
+                    object.setOuterCircleRadiusProgress(value);
+                }
+            };
+
+    //---------------------------------------------------
 }

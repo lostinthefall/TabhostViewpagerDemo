@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private MyFrgmPagerAdapter adapter;
     private TabHost tabHost;
     private HorizontalScrollView horizontalScrollView;
-    private int SET_PAGE = 8;
+    private int SET_PAGE = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
