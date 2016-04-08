@@ -11,6 +11,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.TabHost;
 
 import com.atozmak.tabhostviewpagerdemo.R;
+import com.atozmak.tabhostviewpagerdemo.frgm07.Fragment07;
+import com.atozmak.tabhostviewpagerdemo.frgm08.Fragment08;
 import com.atozmak.tabhostviewpagerdemo.mainActivity.MyFrgmPagerAdapter;
 import com.atozmak.tabhostviewpagerdemo.frgm01.Fragment01;
 import com.atozmak.tabhostviewpagerdemo.frgm02.Fragment02;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private MyFrgmPagerAdapter adapter;
     private TabHost tabHost;
     private HorizontalScrollView horizontalScrollView;
-    private int SET_PAGE = 6;
+    private int SET_PAGE = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
 
-        String[] tabNames = {"tab01", "属性动画", "tween_drawable", "自定义tween(弃用)", "tab5", "tab06", "tab07"};
+        String[] tabNames = {"tab01", "属性动画", "tween_drawable",
+                "自定义tween(弃用)", "小球", "shape", "星星", "画圆圈"};
 
         for (int i = 0; i < tabNames.length; i++) {
             TabHost.TabSpec tabSpec;
@@ -82,7 +85,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         listFrgms.add(new Fragment04());
         listFrgms.add(new Fragment05());
         listFrgms.add(new Fragment06());
-        listFrgms.add(new Fragment03());
+        listFrgms.add(new Fragment07());
+        listFrgms.add(new Fragment08());
 
         adapter = new MyFrgmPagerAdapter(getSupportFragmentManager(), listFrgms);
         mViewPager.setAdapter(adapter);

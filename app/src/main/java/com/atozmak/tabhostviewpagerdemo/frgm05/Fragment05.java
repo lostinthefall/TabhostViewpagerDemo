@@ -22,6 +22,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import com.atozmak.tabhostviewpagerdemo.R;
@@ -34,9 +36,9 @@ import java.util.ArrayList;
 public class Fragment05 extends Fragment {
 
     // 定义小球的大小的常量
-    static final float BALL_SIZE = 50F;
+    static final float BALL_SIZE = 150F;
     // 定义小球从屏幕上方下落到屏幕底端的总时间
-    static final float FULL_TIME = 1000;
+    static final float FULL_TIME = 5000;
 
 
     @Nullable
@@ -56,6 +58,7 @@ public class Fragment05 extends Fragment {
     }
 
     public class MyAnimationView extends View implements AnimatorUpdateListener {
+
         public final ArrayList<ShapeHolder> balls = new ArrayList<>();
 
         public MyAnimationView(Context context) {
@@ -65,33 +68,81 @@ public class Fragment05 extends Fragment {
 
         @Override
         public boolean onTouchEvent(MotionEvent event) {
-            // 如果触碰事件不是按下、移动事件
+
             if (event.getAction() != MotionEvent.ACTION_DOWN
                     && event.getAction() != MotionEvent.ACTION_MOVE) {
                 return false;
             }
-            //  在事件发生点添加一个小球（用一个圆形代表）
+
             ShapeHolder newBall = addBall(event.getX(), event.getY());
+
             // 计算小球下落动画开始时的y坐标
             float startY = newBall.getY();
             // 计算小球下落动画结束时的y坐标（落到屏幕最下方，就是屏幕高度减去小球高度）
             float endY = getHeight() - BALL_SIZE;
-            // 获取屏幕高度
+
+            // 获取你的View的高度
             float h = (float) getHeight();
+
             float eventY = event.getY();
             // 计算动画的持续时间
             int duration = (int) (FULL_TIME * ((h - eventY) / h));
-            // 定义小球“落下”的动画：
-            // 让newBall对象的y属性从事件发生点变化到屏幕最下方
-            ValueAnimator fallAnim = ObjectAnimator.ofFloat(
-                    newBall, "y", startY, endY);
-            // 设置fallAnim动画的持续时间
+
+            //----------------------------------------------
+
+ /*           float startY = newBall.getY();
+            float endY = getHeight() - 50f;
+            float h = (float) getHeight();
+            float eventY = event.getY();
+            int duration = (int) (500 * ((h - eventY) / h));
+            ValueAnimator bounceAnim = ObjectAnimator.ofFloat(newBall, "y", startY, endY);
+            bounceAnim.setDuration(duration);
+            bounceAnim.setInterpolator(new AccelerateInterpolator());
+            ValueAnimator squashAnim1 = ObjectAnimator.ofFloat(newBall, "x", newBall.getX(),
+                    newBall.getX() - 25f);
+            squashAnim1.setDuration(duration / 4);
+            squashAnim1.setRepeatCount(1);
+            squashAnim1.setRepeatMode(ValueAnimator.REVERSE);
+            squashAnim1.setInterpolator(new DecelerateInterpolator());
+            ValueAnimator squashAnim2 = ObjectAnimator.ofFloat(newBall, "width", newBall.getWidth(),
+                    newBall.getWidth() + 50);
+            squashAnim2.setDuration(duration / 4);
+            squashAnim2.setRepeatCount(1);
+            squashAnim2.setRepeatMode(ValueAnimator.REVERSE);
+            squashAnim2.setInterpolator(new DecelerateInterpolator());
+            ValueAnimator stretchAnim1 = ObjectAnimator.ofFloat(newBall, "y", endY,
+                    endY + 25f);
+            stretchAnim1.setDuration(duration / 4);
+            stretchAnim1.setRepeatCount(1);
+            stretchAnim1.setInterpolator(new DecelerateInterpolator());
+            stretchAnim1.setRepeatMode(ValueAnimator.REVERSE);
+            ValueAnimator stretchAnim2 = ObjectAnimator.ofFloat(newBall, "height",
+                    newBall.getHeight(), newBall.getHeight() - 25);
+            stretchAnim2.setDuration(duration / 4);
+            stretchAnim2.setRepeatCount(1);
+            stretchAnim2.setInterpolator(new DecelerateInterpolator());
+            stretchAnim2.setRepeatMode(ValueAnimator.REVERSE);
+            ValueAnimator bounceBackAnim = ObjectAnimator.ofFloat(newBall, "y", endY,
+                    startY);
+            bounceBackAnim.setDuration(duration);
+            bounceBackAnim.setInterpolator(new DecelerateInterpolator());
+            // Sequence the down/squash&stretch/up animations
+            AnimatorSet bouncer = new AnimatorSet();
+            bouncer.play(bounceAnim).before(squashAnim1);
+            bouncer.play(squashAnim1).with(squashAnim2);
+            bouncer.play(squashAnim1).with(stretchAnim1);
+            bouncer.play(squashAnim1).with(stretchAnim2);
+            bouncer.play(bounceBackAnim).after(stretchAnim2);*/
+
+            //----------------------------------------------
+
+
+            ValueAnimator fallAnim = ObjectAnimator.ofFloat(newBall, "y", startY, endY);
             fallAnim.setDuration(duration);
-            // 设置fallAnim动画的插值方式：加速插值
-            fallAnim.setInterpolator(new AccelerateInterpolator());
-            // 为fallAnim动画添加监听器
-            // 当ValueAnimator的属性值发生改变时，将会激发该监听器的事件监听方法
+            fallAnim.setInterpolator(new BounceInterpolator());
+
             fallAnim.addUpdateListener(this);
+
             // 定义对newBall对象的alpha属性执行从1到0的动画（即定义渐隐动画）
             ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(newBall
                     , "alpha", 1f, 1f);
@@ -99,18 +150,16 @@ public class Fragment05 extends Fragment {
             fadeAnim.setDuration(250);
 
             // 为fadeAnim动画添加监听器
-/*            fadeAnim.addListener(new AnimatorListenerAdapter() {
+            fadeAnim.addListener(new AnimatorListenerAdapter() {
                 // 当动画结束时
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     // 动画结束时将该动画关联的ShapeHolder删除
                     balls.remove(((ObjectAnimator) animation).getTarget());
                 }
-            });*/
+            });
 
-            // 为fadeAnim动画添加监听器
-            // 当ValueAnimator的属性值发生改变时，将会激发该监听器的事件监听方法
-            fadeAnim.addUpdateListener(this);
+
             // 定义一个AnimatorSet来组合动画
             AnimatorSet animatorSet = new AnimatorSet();
             // 指定在播放fadeAnim之前，先播放fallAnim动画
@@ -170,9 +219,10 @@ public class Fragment05 extends Fragment {
 
         @Override
         protected void onDraw(Canvas canvas) {
-            // 遍历balls集合中的每个ShapeHolder对象
-            for (ShapeHolder shapeHolder : balls) {
-                // 保存canvas的当前坐标系统
+
+            for (int i = 0; i < balls.size(); ++i) {
+                ShapeHolder shapeHolder = balls.get(i);
+
                 canvas.save();
                 // 坐标变换：将画布坐标系统平移到shapeHolder的X、Y坐标处
                 canvas.translate(shapeHolder.getX()
@@ -186,8 +236,7 @@ public class Fragment05 extends Fragment {
 
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
-            // 指定重绘该界面
-            this.invalidate();  // ①
+            this.invalidate();
         }
     }
 

@@ -3,8 +3,10 @@ package com.atozmak.tabhostviewpagerdemo.frgm05;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
 import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.Shape;
 
 public class ShapeHolder {
+
     private float x = 0, y = 0;
     private ShapeDrawable shape;
     private int color;
@@ -71,4 +73,23 @@ public class ShapeHolder {
     public void setPaint(Paint paint) {
         this.paint = paint;
     }
+
+    public float getWidth() {
+        return shape.getShape().getWidth();
+    }
+
+    public void setWidth(float width) {
+        Shape s = shape.getShape();
+        s.resize(width, s.getHeight());
+    }
+
+    public float getHeight() {
+        return shape.getShape().getHeight();
+    }
+
+    public void setHeight(float height) {
+        Shape s = shape.getShape();
+        s.resize(s.getWidth(), height);
+    }
+
 }

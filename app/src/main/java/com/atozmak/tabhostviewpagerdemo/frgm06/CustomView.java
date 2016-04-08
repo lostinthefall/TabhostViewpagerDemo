@@ -1,5 +1,6 @@
 package com.atozmak.tabhostviewpagerdemo.frgm06;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,7 +15,7 @@ import com.atozmak.tabhostviewpagerdemo.R;
 /**
  * Created by Mak on 2016/4/7.
  */
-public class CustomView extends View {
+public class CustomView extends View implements ValueAnimator.AnimatorUpdateListener{
 
     Paint paint;
 
@@ -42,5 +43,10 @@ public class CustomView extends View {
     protected void onDraw(Canvas canvas) {
 
         canvas.drawRect(0, 0, 500, 500, paint);
+    }
+
+    @Override
+    public void onAnimationUpdate(ValueAnimator animation) {
+
     }
 }

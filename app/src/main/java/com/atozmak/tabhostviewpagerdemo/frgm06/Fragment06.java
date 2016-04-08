@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.atozmak.tabhostviewpagerdemo.R;
 
 /**
- * Created by Mak on 2016/4/5.
+ * shape参考http://blog.csdn.net/jjwwmlp456/article/details/46928859
  */
 public class Fragment06 extends Fragment {
 
