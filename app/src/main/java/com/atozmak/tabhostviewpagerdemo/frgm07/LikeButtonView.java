@@ -31,7 +31,7 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
     private AccelerateDecelerateInterpolator mAccelerateDecelerateInterpolator;
     private AnimatorSet mAnimatorSet;
 
-    private boolean mIsChecked;
+    private boolean mIsChecked = false;
 
 
     public LikeButtonView(Context context) {
@@ -63,7 +63,6 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
     }
 
     private void init() {
-
 
         //不懂；
         isInEditMode();
@@ -100,21 +99,17 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
 
 
             ObjectAnimator outerCircleAnimator =
-                    ObjectAnimator.ofFloat(
-                            mCvCircle, CircleView.OUTER_CIRCLE_RADIUS_PROGRESS,
-                            0.1f, 1f);
+                    ObjectAnimator.ofFloat(mCvCircle, CircleView.OUTER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
             outerCircleAnimator.setDuration(250);
             outerCircleAnimator.setInterpolator(mDecelerateInterpolator);
 
 
-            ObjectAnimator innerCircleAnimator =
-                    ObjectAnimator.ofFloat(
-                            mCvCircle, CircleView.INNER_CIRCLE_RADIUS_PROGRESS,
-                            0.1f, 1f
-                    );
+            ObjectAnimator innerCircleAnimator
+                    = ObjectAnimator.ofFloat(mCvCircle, CircleView.INNER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
             innerCircleAnimator.setDuration(200);
             innerCircleAnimator.setStartDelay(200);
             innerCircleAnimator.setInterpolator(mDecelerateInterpolator);
+
 
             ObjectAnimator starScaleYAnimator = ObjectAnimator.ofFloat(mIvStar, ImageView.SCALE_Y, 0.2f, 1f);
             starScaleYAnimator.setDuration(350);
@@ -153,34 +148,47 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
                     mDvDots.setCurrentProgress(0);
                 }
             });
-
             mAnimatorSet.start();
-
         }
-
-
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
+
+            /**
+             * 按下的时候，星星变小，记录状态为“按着”
+             */
             case MotionEvent.ACTION_DOWN:
-                mIvStar.animate().scaleX(0.7f).scaleY(0.7f).setDuration(150).setInterpolator(mDecelerateInterpolator);
+                mIvStar.animate().scaleX(0.7f).scaleY(0.7f).setDuration(150).setInterpolator(mOvershootInterpolator);
+                // Pass true to set the View's internal state to "pressed",
+                // or false to reverts the View's internal state from a previously set "pressed" state.
                 setPressed(true);
                 break;
 
+            /**
+             * 如果状态为“按着”和“手指在本控件内移动”，那就不管。
+             * 否则，把状态设为“没按着”
+             */
             case MotionEvent.ACTION_MOVE:
                 float x = event.getX();
                 float y = event.getY();
                 boolean isInside = (x > 0 && x < getWidth() && y > 0 && y < getHeight());
+                // isPressed() : true if the view is currently pressed, false otherwise
                 if (isPressed() != isInside) {
                     setPressed(isInside);
                 }
                 break;
 
+            /**
+             * 手指松开时，星星回复形状，
+             * 如果状态为“按着”的话，那就播放动画。
+             * 然后把状态设回“没按着”。
+             */
             case MotionEvent.ACTION_UP:
-                mIvStar.animate().scaleX(1).scaleY(1).setInterpolator(mDecelerateInterpolator);
+                mIvStar.animate().scaleX(1).scaleY(1).setInterpolator(mOvershootInterpolator);
                 if (isPressed()) {
+                    // Call this view's OnClickListener, if it is defined.
                     performClick();
                     setPressed(false);
                 }

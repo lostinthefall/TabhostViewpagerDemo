@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="frgm_09"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+<!--private DecelerateInterpolator mDecelerateInterpolator;
+    private OvershootInterpolator mOvershootInterpolator;
+    private AccelerateDecelerateInterpolator mAccelerateDecelerateInterpolator;-->
+        <Button
+            android:id="@+id/btnDecelerate"
+            android:text="减速____fsfsdffs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnOvershoot"
+            android:text="Over————shoot"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnAccelerateDecelerate"
+            android:text="加速减速____fsfsdffs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
