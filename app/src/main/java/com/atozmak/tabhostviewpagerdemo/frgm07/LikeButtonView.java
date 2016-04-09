@@ -33,7 +33,6 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
 
     private boolean mIsChecked = false;
 
-
     public LikeButtonView(Context context) {
         super(context);
         init();
@@ -74,82 +73,6 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
         mAccelerateDecelerateInterpolator = new AccelerateDecelerateInterpolator();
 
         setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        mIsChecked = !mIsChecked;
-        mIvStar.setImageResource(mIsChecked ? R.drawable.ic_star_rate_on : R.drawable.ic_star_rate_off);
-
-        if (mAnimatorSet != null) {
-            mAnimatorSet.cancel();
-        }
-
-        if (mIsChecked) {
-
-            mIvStar.animate().cancel();
-            mIvStar.setScaleX(0);
-            mIvStar.setScaleY(0);
-            mCvCircle.setInnerCircleRadiusProgress(0);
-            mCvCircle.setOuterCircleRadiusProgress(0);
-            mDvDots.setCurrentProgress(0);
-
-            mAnimatorSet = new AnimatorSet();
-
-
-            ObjectAnimator outerCircleAnimator =
-                    ObjectAnimator.ofFloat(mCvCircle, CircleView.OUTER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
-            outerCircleAnimator.setDuration(250);
-            outerCircleAnimator.setInterpolator(mDecelerateInterpolator);
-
-
-            ObjectAnimator innerCircleAnimator
-                    = ObjectAnimator.ofFloat(mCvCircle, CircleView.INNER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
-            innerCircleAnimator.setDuration(200);
-            innerCircleAnimator.setStartDelay(200);
-            innerCircleAnimator.setInterpolator(mDecelerateInterpolator);
-
-
-            ObjectAnimator starScaleYAnimator = ObjectAnimator.ofFloat(mIvStar, ImageView.SCALE_Y, 0.2f, 1f);
-            starScaleYAnimator.setDuration(350);
-            starScaleYAnimator.setStartDelay(250);
-            starScaleYAnimator.setInterpolator(mOvershootInterpolator);
-
-            ObjectAnimator starScaleXAnimator = ObjectAnimator.ofFloat(mIvStar, ImageView.SCALE_X, 0.2f, 1f);
-            starScaleXAnimator.setDuration(350);
-            starScaleXAnimator.setStartDelay(250);
-            starScaleXAnimator.setInterpolator(mOvershootInterpolator);
-
-            ObjectAnimator dotsAnimator = ObjectAnimator.ofFloat(mDvDots, DotsView.DOTS_PROGRESS, 0, 1f);
-            dotsAnimator.setDuration(900);
-            dotsAnimator.setStartDelay(50);
-            dotsAnimator.setInterpolator(mAccelerateDecelerateInterpolator);
-
-
-            mAnimatorSet.playTogether(
-                    outerCircleAnimator,
-                    innerCircleAnimator,
-                    starScaleYAnimator,
-                    starScaleXAnimator,
-                    dotsAnimator
-            );
-
-
-            mAnimatorSet.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                    mIvStar.setScaleX(1);
-                    mIvStar.setScaleY(1);
-
-                    mCvCircle.setOuterCircleRadiusProgress(0);
-                    mCvCircle.setInnerCircleRadiusProgress(0);
-
-                    mDvDots.setCurrentProgress(0);
-                }
-            });
-            mAnimatorSet.start();
-        }
     }
 
     @Override
@@ -195,6 +118,94 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        // mIsChecked 用来记录黄星还是暗星。true：黄星。false：暗星。
+        mIsChecked = !mIsChecked;
+        mIvStar.setImageResource(mIsChecked ? R.drawable.ic_star_rate_on : R.drawable.ic_star_rate_off);
+
+        //比如快速的2次点击，当第一次的动画还没结束的时候，第二次点击会把第一次的动画取消。
+        if (mAnimatorSet != null) {
+            mAnimatorSet.cancel();
+        }
+
+        if (mIsChecked) {
+            /**
+             * 动画开始前，把星星和圆点都设置为最小。
+             */
+            mIvStar.animate().cancel();
+            mIvStar.setScaleX(0);
+            mIvStar.setScaleY(0);
+            mCvCircle.setInnerCircleRadiusProgress(0);
+            mCvCircle.setOuterCircleRadiusProgress(0);
+            mDvDots.setCurrentProgress(0);
+
+            mAnimatorSet = new AnimatorSet();
+
+
+            ObjectAnimator outerCircleAnimator =
+                    ObjectAnimator.ofFloat(mCvCircle, CircleView.OUTER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
+            outerCircleAnimator.setDuration(250);
+            outerCircleAnimator.setInterpolator(mDecelerateInterpolator);
+
+
+            ObjectAnimator innerCircleAnimator
+                    = ObjectAnimator.ofFloat(mCvCircle, CircleView.INNER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
+            innerCircleAnimator.setDuration(200);
+            innerCircleAnimator.setStartDelay(200);
+            innerCircleAnimator.setInterpolator(mDecelerateInterpolator);
+
+
+            ObjectAnimator starScaleYAnimator = ObjectAnimator.ofFloat(mIvStar, ImageView.SCALE_Y, 0.2f, 1f);
+            starScaleYAnimator.setDuration(350);
+            starScaleYAnimator.setStartDelay(250);
+            starScaleYAnimator.setInterpolator(mOvershootInterpolator);
+
+            ObjectAnimator starScaleXAnimator = ObjectAnimator.ofFloat(mIvStar, ImageView.SCALE_X, 0.2f, 1f);
+            starScaleXAnimator.setDuration(350);
+            starScaleXAnimator.setStartDelay(250);
+            starScaleXAnimator.setInterpolator(mOvershootInterpolator);
+
+            ObjectAnimator dotsAnimator = ObjectAnimator.ofFloat(mDvDots, DotsView.DOTS_PROGRESS, 0, 1f);
+            dotsAnimator.setDuration(900);
+            dotsAnimator.setStartDelay(50);
+            dotsAnimator.setInterpolator(mAccelerateDecelerateInterpolator);
+
+            mAnimatorSet.playTogether(
+                    outerCircleAnimator,
+                    innerCircleAnimator,
+                    starScaleYAnimator,
+                    starScaleXAnimator,
+                    dotsAnimator
+            );
+
+            /**
+             * 比如快速的2次点击，当第一次的动画还没结束的时候，第二次点击会把第一次的动画取消。
+             * 取消了之后，设置各个控件的状态。
+             *
+             * addListener(AnimatorListener listener)
+             * public static interface AnimatorListener
+             * public abstract class AnimatorListenerAdapter implements Animator.AnimatorListener
+             * AnimatorListenerAdapter 重写了 AnimatorListener 的所有方法。
+             * AnimatorListenerAdapter 中的都不是抽象方法，所以只选需要的方法来重写就ok。
+             */
+            mAnimatorSet.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    mIvStar.setScaleX(1);
+                    mIvStar.setScaleY(1);
+
+                    mCvCircle.setOuterCircleRadiusProgress(0);
+                    mCvCircle.setInnerCircleRadiusProgress(0);
+
+                    mDvDots.setCurrentProgress(0);
+                }
+            });
+            mAnimatorSet.start();
+        }
     }
 }
 
