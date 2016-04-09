@@ -12,12 +12,16 @@ import android.util.Log;
 import android.util.Property;
 import android.view.View;
 
+import com.atozmak.tabhostviewpagerdemo.mainActivity.LogUtils;
+
 /**
  * 圆形视图, 外圆是实心圆圈, 颜色渐变; 内圆是擦除效果.
  * <p/>
  * Created by Mak on 2016/4/8.
  */
 public class CircleView extends View {
+
+    public static final String TAG = LogUtils.makLogTag("CircleView");
 
     private static final int START_COLOR = 0xffff5722;//红色 http://rgb.phpddt.com/
     private static final int END_COLOR = 0xffffc107;//橙色 http://rgb.phpddt.com/
@@ -97,6 +101,7 @@ public class CircleView extends View {
         mTempCanvas.drawCircle(
                 getWidth() / 2,
                 getHeight() / 2,
+                //progress * 半径 ，什么意思？
                 mOuterCircleRadiusProgress * mMaxCircleSize,
                 mCirclePaint
         );
@@ -119,6 +124,7 @@ public class CircleView extends View {
         mOuterCircleRadiusProgress = outerCircleRadiusProgress;
         updateCircleColor();
         postInvalidate();
+        Log.v(TAG,"updateCircleColor>>>>postInvalidate>>>>>");
     }
 
     // 更新圆圈的颜色变化
@@ -136,6 +142,28 @@ public class CircleView extends View {
         mCirclePaint.setColor((Integer) mArgbEvaluator.evaluate(colorProgress, START_COLOR, END_COLOR));
     }
 
+
+    /**
+     * get,set例子。
+     *
+     private static class MyView{
+       private View mTarget;
+       private MyView(View mTarget){
+         this.mTarget=mTarget;
+       }
+       public int getWidth(){
+         return mTarget.getLayoutParams().width;
+       }
+       public void setWidth(int width){
+         mTarget.getLayoutParams().width=width;
+         mTarget.requestLayout();
+       }
+     }
+     使用时只需要操纵包类就可以调用get,set方法：
+     MyView mMyView=new MyView(mButton);
+     ObjectAnimator.ofInt(mMyView,"width",500).setDuration(500).start();
+     */
+
     public float getInnerCircleRadiusProgress() {
         return mInnerCircleRadiusProgress;
     }
@@ -147,7 +175,18 @@ public class CircleView extends View {
 
     //---------------------------------------------------
 
-    // <T> The class on which the property is declared.  <V> The type that this property represents.
+    /**
+     *
+     * 问题是：ObjectAnimator是如何获取自定义属性名的。
+     *
+     * public static <T> ObjectAnimator ofFloat( T target,   Property<T, Float> property,   float... values)
+     *
+     * ObjectAnimator.ofFloat(mCvCircle, CircleView.OUTER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
+     * ObjectAnimator.ofFloat(mCvCircle, CircleView.INNER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
+     *
+     * <T> The class on which the property is declared.
+     * <V> The type that this property represents.
+     */
     public static final Property<CircleView, Float> INNER_CIRCLE_RADIUS_PROGRESS =
 
             //public Property(Class<V> type, String name)
@@ -159,7 +198,13 @@ public class CircleView extends View {
                     return object.getInnerCircleRadiusProgress();
                 }
 
-                // public void set(T object, V value)
+                /**
+                 *
+                 * public void set(T object, V value)
+                 *
+                 * @param object //
+                 * @param value 这个value是从哪里来的。
+                 */
                 @Override
                 public void set(CircleView object, Float value) {
                     object.setInnerCircleRadiusProgress(value);

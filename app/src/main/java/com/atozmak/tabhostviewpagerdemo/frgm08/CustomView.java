@@ -36,7 +36,7 @@ public class CustomView extends View {
 
     private void init(Context context) {
 
-        Log.v(TAG, "CustomView构造函数");
+//        Log.v(TAG, "CustomView构造函数");
 
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
@@ -52,32 +52,32 @@ public class CustomView extends View {
         super.onDraw(canvas);
 
         canvas.drawOval(rectF, paint);
-        Log.v(TAG, "onDraw");
+//        Log.v(TAG, "onDraw");
 
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Log.v(TAG, "onSizeChanged");
+//        Log.v(TAG, "onSizeChanged");
     }
 
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        Log.v(TAG, "onFinishInflate");
+//        Log.v(TAG, "onFinishInflate");
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Log.v(TAG, "onMeasure");
+//        Log.v(TAG, "onMeasure");
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        Log.v(TAG, "onLayout");
+//        Log.v(TAG, "onLayout");
     }
 }
