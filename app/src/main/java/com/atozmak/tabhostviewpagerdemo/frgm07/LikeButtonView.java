@@ -145,34 +145,44 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
 
             mAnimatorSet = new AnimatorSet();
 
-
+            /**
+             * CircleView
+             *
+             * 这是一个圆环，动画开始后，
+             * 圆环的半径越来越大，圆环的环宽越来越窄，颜色由红色变为黄色。
+             */
             ObjectAnimator outerCircleAnimator =
                     ObjectAnimator.ofFloat(mCvCircle, CircleView.OUTER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
             outerCircleAnimator.setDuration(250);
+//              outerCircleAnimator.setDuration(1250);
             outerCircleAnimator.setInterpolator(mDecelerateInterpolator);
-
-
             ObjectAnimator innerCircleAnimator
                     = ObjectAnimator.ofFloat(mCvCircle, CircleView.INNER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
             innerCircleAnimator.setDuration(200);
+//               innerCircleAnimator.setDuration(1200);
             innerCircleAnimator.setStartDelay(200);
             innerCircleAnimator.setInterpolator(mDecelerateInterpolator);
 
-
+            /**
+             * mIvStar
+             */
             ObjectAnimator starScaleYAnimator = ObjectAnimator.ofFloat(mIvStar, ImageView.SCALE_Y, 0.2f, 1f);
             starScaleYAnimator.setDuration(350);
             starScaleYAnimator.setStartDelay(250);
             starScaleYAnimator.setInterpolator(mOvershootInterpolator);
-
             ObjectAnimator starScaleXAnimator = ObjectAnimator.ofFloat(mIvStar, ImageView.SCALE_X, 0.2f, 1f);
             starScaleXAnimator.setDuration(350);
             starScaleXAnimator.setStartDelay(250);
             starScaleXAnimator.setInterpolator(mOvershootInterpolator);
 
+            /**
+             * DotsView
+             */
             ObjectAnimator dotsAnimator = ObjectAnimator.ofFloat(mDvDots, DotsView.DOTS_PROGRESS, 0, 1f);
             dotsAnimator.setDuration(900);
             dotsAnimator.setStartDelay(50);
             dotsAnimator.setInterpolator(mAccelerateDecelerateInterpolator);
+
 
             mAnimatorSet.playTogether(
                     outerCircleAnimator,

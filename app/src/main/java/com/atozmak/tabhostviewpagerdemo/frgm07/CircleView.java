@@ -19,10 +19,10 @@ import android.view.View;
  */
 public class CircleView extends View {
 
-    private static final int START_COLOR = 0xffff5722;
-    private static final int END_COLOR = 0xffffc107;
+    private static final int START_COLOR = 0xffff5722;//红色 http://rgb.phpddt.com/
+    private static final int END_COLOR = 0xffffc107;//橙色 http://rgb.phpddt.com/
 
-    private ArgbEvaluator mArgbEvaluator;
+    private ArgbEvaluator mArgbEvaluator;//颜色值计算器。
 
     private Paint mCirclePaint;//圆形试图
     private Paint mMaskPaint;//掩盖视图
@@ -30,7 +30,7 @@ public class CircleView extends View {
     private Canvas mTempCanvas;//中间画布
     private Bitmap mTempBitmap;//中间画图
 
-    private int mMaxCircleSize;//最大圆环大小
+    private int mMaxCircleSize;//最大圆环大小（半径）
 
     private float mOuterCircleRadiusProgress;
     private float mInnerCircleRadiusProgress;
@@ -51,6 +51,7 @@ public class CircleView extends View {
         init();
     }
 
+    //初始化, 外圆使用实心画笔(Paint), 内圆使用擦除画笔. ArgbEvaluator控制颜色变换.
     private void init() {
         mCirclePaint = new Paint();
         mCirclePaint.setStyle(Paint.Style.FILL);
@@ -64,16 +65,25 @@ public class CircleView extends View {
 
     //---------------------------------------------------
 
-    // onMeasure结束后会调用onSizeChanged。
-    //* @param w Current width of this view.
-    //* @param h Current height of this view.
-    //* @param oldw Old width of this view.
-    //* @param oldh Old height of this view.
+    /**
+     * onMeasure结束后会调用onSizeChanged。
+     * <p/>
+     * @param w    Current width of this view.
+     * @param h    Current height of this view.
+     * @param oldw Old width of this view.
+     * @param oldh Old height of this view.
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+
+        //圆的半径最大不超过本view宽度的一般。
         mMaxCircleSize = w / 2;
+
+        //Returns a mutable bitmap with the specified width and height.
         mTempBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+
+        //* Construct a canvas with the specified bitmap to draw into. The bitmap must be mutable.
         mTempCanvas = new Canvas(mTempBitmap);
     }
 

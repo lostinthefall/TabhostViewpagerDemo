@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- 有3层，最顶层是点点，中间层是圆圈，最外层是星星 -->
+
     <com.atozmak.tabhostviewpagerdemo.frgm07.DotsView
         android:id="@+id/like_button_dv_dots"
         android:layout_width="match_parent"
@@ -13,6 +15,7 @@
     <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:gravity="center">
 
         <com.atozmak.tabhostviewpagerdemo.frgm07.CircleView
@@ -20,13 +23,14 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_aspectRatio="100%"
-            app:layout_widthPercent="40%" />
+            app:layout_widthPercent="60%" />
 
     </android.support.percent.PercentRelativeLayout>
 
     <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:gravity="center">
 
         <ImageView

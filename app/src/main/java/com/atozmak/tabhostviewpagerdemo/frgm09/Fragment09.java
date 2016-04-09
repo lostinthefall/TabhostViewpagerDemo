@@ -1,5 +1,6 @@
 package com.atozmak.tabhostviewpagerdemo.frgm09;
 
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 
@@ -43,9 +45,17 @@ public class Fragment09 extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnDecelerate:
+
                 ObjectAnimator animator1 = ObjectAnimator.ofFloat(btnDecelerate, "Y", 0, 800).setDuration(1000);
                 animator1.setInterpolator(new DecelerateInterpolator());
                 animator1.start();
+
+                ObjectAnimator animator0 = ObjectAnimator.ofInt(btnDecelerate, "BackgroundColor", 0xffffffff, 0xffffff00);
+                //  ObjectAnimator animator0 = ObjectAnimator.ofObject(btnDecelerate, "BackgroundColor", new ArgbEvaluator(), 0xffffffff, 0xffffff00);
+                animator0.setDuration(1000);
+                //animator0.setEvaluator(new ArgbEvaluator());
+                animator0.start();
+
                 break;
             case R.id.btnOvershoot:
                 ObjectAnimator animator2 = ObjectAnimator.ofFloat(btnOvershoot, "Y", 0, 800).setDuration(1000);
