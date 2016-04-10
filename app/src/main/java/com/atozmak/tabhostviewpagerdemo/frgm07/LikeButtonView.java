@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import com.atozmak.tabhostviewpagerdemo.R;
 
 /**
- * Created by Mak on 2016/4/8.
+ * http://www.wangchenlong.org/2016/03/22/1603/224-star-explode-anim/
  */
 public class LikeButtonView extends FrameLayout implements View.OnClickListener {
 
@@ -32,6 +32,9 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
     private AnimatorSet mAnimatorSet;
 
     private boolean mIsChecked = false;
+
+    private OnLikeClickListener listener;
+
 
     public LikeButtonView(Context context) {
         super(context);
@@ -51,6 +54,10 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
     public LikeButtonView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
+    }
+
+    public void setOnLikeCLickListener(OnLikeClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -215,6 +222,10 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
                 }
             });
             mAnimatorSet.start();
+
+            listener.onYellowStar();
+        } else {
+            listener.onGreyStar();
         }
     }
 }

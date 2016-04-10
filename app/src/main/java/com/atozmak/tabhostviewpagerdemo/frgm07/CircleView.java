@@ -36,8 +36,8 @@ public class CircleView extends View {
 
     private int mMaxCircleSize;//最大圆环大小（半径）
 
-    private float mOuterCircleRadiusProgress;
-    private float mInnerCircleRadiusProgress;
+    private float mOuterCircleRadiusProgress;//初始值默认为0.0
+    private float mInnerCircleRadiusProgress;//初始值默认为0.0
 
 
     public CircleView(Context context) {
@@ -72,6 +72,7 @@ public class CircleView extends View {
     /**
      * onMeasure结束后会调用onSizeChanged。
      * <p/>
+     *
      * @param w    Current width of this view.
      * @param h    Current height of this view.
      * @param oldw Old width of this view.
@@ -111,7 +112,14 @@ public class CircleView extends View {
                 mInnerCircleRadiusProgress * mMaxCircleSize,
                 mMaskPaint
         );
+        /**
+         * Canvas(bitmap) 与 canvas.setBitmap(bitmap)中的bitmap是Canvas的mBitmap，直接操作/修改的对象。
+         * canvas.drawBitmap(bitmap)中的bitmap是源bitmap，draw时，不对源bitmap进行写操作，
+         */
         canvas.drawBitmap(mTempBitmap, 0, 0, null);
+
+//        Log.v(TAG, "onDraw——————" + "mOuterCircleRadiusProgress= " + mOuterCircleRadiusProgress);
+
     }
 
     //---------------------------------------------------
@@ -123,8 +131,11 @@ public class CircleView extends View {
     public void setOuterCircleRadiusProgress(float outerCircleRadiusProgress) {
         mOuterCircleRadiusProgress = outerCircleRadiusProgress;
         updateCircleColor();
+
+        //因为这是一个动态的view，所以需要通知view在数值更新时就要更新view。
         postInvalidate();
-        Log.v(TAG,"updateCircleColor>>>>postInvalidate>>>>>");
+
+//        Log.v(TAG, "updateCircleColor>>>>postInvalidate>>>>>");
     }
 
     // 更新圆圈的颜色变化
@@ -145,23 +156,23 @@ public class CircleView extends View {
 
     /**
      * get,set例子。
-     *
-     private static class MyView{
-       private View mTarget;
-       private MyView(View mTarget){
-         this.mTarget=mTarget;
-       }
-       public int getWidth(){
-         return mTarget.getLayoutParams().width;
-       }
-       public void setWidth(int width){
-         mTarget.getLayoutParams().width=width;
-         mTarget.requestLayout();
-       }
-     }
-     使用时只需要操纵包类就可以调用get,set方法：
-     MyView mMyView=new MyView(mButton);
-     ObjectAnimator.ofInt(mMyView,"width",500).setDuration(500).start();
+     * <p/>
+     * private static class MyView{
+     * private View mTarget;
+     * private MyView(View mTarget){
+     * this.mTarget=mTarget;
+     * }
+     * public int getWidth(){
+     * return mTarget.getLayoutParams().width;
+     * }
+     * public void setWidth(int width){
+     * mTarget.getLayoutParams().width=width;
+     * mTarget.requestLayout();
+     * }
+     * }
+     * 使用时只需要操纵包类就可以调用get,set方法：
+     * MyView mMyView=new MyView(mButton);
+     * ObjectAnimator.ofInt(mMyView,"width",500).setDuration(500).start();
      */
 
     public float getInnerCircleRadiusProgress() {
@@ -170,20 +181,24 @@ public class CircleView extends View {
 
     public void setInnerCircleRadiusProgress(float innerCircleRadiusProgress) {
         mInnerCircleRadiusProgress = innerCircleRadiusProgress;
+
+        // 从【ObjectAnimation.ofFloat】中获取到【开始值】和【终值】，
+        // 通过【Property】传递到【setInnerCircleRadiusProgress】，
+        // 【setInnerCircleRadiusProgress】把值传给【mInnerCircleRadiusProgress】，
+        // 然后通知系统更新view。
         postInvalidate();
     }
 
     //---------------------------------------------------
 
     /**
-     *
      * 问题是：ObjectAnimator是如何获取自定义属性名的。
-     *
+     * <p/>
      * public static <T> ObjectAnimator ofFloat( T target,   Property<T, Float> property,   float... values)
-     *
+     * <p/>
      * ObjectAnimator.ofFloat(mCvCircle, CircleView.OUTER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
      * ObjectAnimator.ofFloat(mCvCircle, CircleView.INNER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
-     *
+     * <p/>
      * <T> The class on which the property is declared.
      * <V> The type that this property represents.
      */
@@ -203,7 +218,7 @@ public class CircleView extends View {
                  * public void set(T object, V value)
                  *
                  * @param object //
-                 * @param value 这个value是从哪里来的。
+                 * @param value 这个value是从哪里来的。(应该是)ObjectAnimator.ofFloat的时候传进去的value。
                  */
                 @Override
                 public void set(CircleView object, Float value) {
