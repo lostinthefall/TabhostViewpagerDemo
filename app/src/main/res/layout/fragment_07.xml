@@ -32,7 +32,7 @@
         android:id="@+id/like_button"
         android:layout_width="350dp"
         android:layout_height="350dp"
-        android:background="#dddddd"
+        android:background="#888888"
         android:layout_gravity="center" />
 
 

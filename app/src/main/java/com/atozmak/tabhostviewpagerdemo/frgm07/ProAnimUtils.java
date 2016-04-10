@@ -10,8 +10,13 @@ public class ProAnimUtils {
 
     //未明？
     // 映射到下一个域
-    public static double mapValueFromRangeToRange
-    (double value, double fromLow, double fromHigh, double toLow, double toHigh) {
+
+    /**
+     * colorProgress = (float) ProAnimUtils.mapValueFromRangeToRange(
+     * colorProgress, 0.5f, 1f, 0f, 1f
+     * );
+     */
+    public static double mapValueFromRangeToRange(double value, double fromLow, double fromHigh, double toLow, double toHigh) {
         return toLow + ((value - fromLow) / (fromHigh - fromLow) * (toHigh - toLow));
     }
 

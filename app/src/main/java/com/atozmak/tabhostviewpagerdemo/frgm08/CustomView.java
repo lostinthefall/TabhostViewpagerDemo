@@ -2,9 +2,12 @@ package com.atozmak.tabhostviewpagerdemo.frgm08;
 
 import android.content.Context;
 import android.content.MutableContextWrapper;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -23,6 +26,8 @@ public class CustomView extends View {
     private Paint paint;
     private RectF rectF;
 
+    private Bitmap mBitmap;
+    private Canvas mCanvas;
 
     public CustomView(Context context) {
         super(context);
@@ -44,15 +49,6 @@ public class CustomView extends View {
         //包围这个圆的矩形，简单说就是一个 wrapper。
         rectF = new RectF(50, 50, 1300, 1300);
 
-    }
-
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        canvas.drawOval(rectF, paint);
-//        Log.v(TAG, "onDraw");
 
     }
 
@@ -60,6 +56,25 @@ public class CustomView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 //        Log.v(TAG, "onSizeChanged");
+
+        mBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+
+        mCanvas = new Canvas(mBitmap);
+    }
+
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+//        canvas.drawOval(rectF, paint);
+//        Log.v(TAG, "onDraw");
+
+
+        mCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
+
+        mCanvas.drawBitmap(mBitmap, 0, 0, null);
+
     }
 
 

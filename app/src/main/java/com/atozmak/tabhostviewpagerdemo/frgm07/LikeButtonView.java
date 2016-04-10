@@ -163,6 +163,7 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
             outerCircleAnimator.setDuration(250);
 //              outerCircleAnimator.setDuration(1250);
             outerCircleAnimator.setInterpolator(mDecelerateInterpolator);
+
             ObjectAnimator innerCircleAnimator
                     = ObjectAnimator.ofFloat(mCvCircle, CircleView.INNER_CIRCLE_RADIUS_PROGRESS, 0.1f, 1f);
             innerCircleAnimator.setDuration(200);

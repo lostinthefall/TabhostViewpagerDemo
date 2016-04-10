@@ -23,8 +23,8 @@ public class CircleView extends View {
 
     public static final String TAG = LogUtils.makLogTag("CircleView");
 
-    private static final int START_COLOR = 0xffff5722;//红色 http://rgb.phpddt.com/
-    private static final int END_COLOR = 0xffffc107;//橙色 http://rgb.phpddt.com/
+    private static final int START_COLOR_RED = 0xffff5722;//红色 http://rgb.phpddt.com/
+    private static final int END_COLOR_ORANGE = 0xffffc107;//橙色 http://rgb.phpddt.com/
 
     private ArgbEvaluator mArgbEvaluator;//颜色值计算器。
 
@@ -97,15 +97,24 @@ public class CircleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mTempCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
+        /**
+         * 画一个透明的背景。不画的话效果也是一样，不知道作者为什么会这样做。
+         *
+         * 如果是用canvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);就会得到黑色的背景。
+         * 即使在xml文件中也改变不了背景色。还是黑色
+         *
+         * mTempCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
+         */
+        //  mTempCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
 
         mTempCanvas.drawCircle(
                 getWidth() / 2,
                 getHeight() / 2,
-                //progress * 半径 ，什么意思？
+                //变化值<0~1> * 半径 ，即，圆将由小变大，最大至半径为mMaxCircleSize。
                 mOuterCircleRadiusProgress * mMaxCircleSize,
                 mCirclePaint
         );
+        //mMaskPaint只会擦除本view里面的底色，本view外的颜色不受影响。
         mTempCanvas.drawCircle(
                 getWidth() / 2,
                 getHeight() / 2,
@@ -141,16 +150,35 @@ public class CircleView extends View {
     // 更新圆圈的颜色变化
     private void updateCircleColor() {
 
-        // 0.5到1颜色渐变
+        /**
+         *  0.5到1颜色渐变
+         *
+         *  如果【mOuterCircleRadiusProgress】在【0.5到1】之间的话，
+         *  就返回【mOuterCircleRadiusProgress】，否则返回0.5或者1.
+         *
+         *  流程：【mOuterCircleRadiusProgress】<0.1~1>,【colorProgress】<0.5~1>
+         */
         float colorProgress = (float) ProAnimUtils.clamp(
                 mOuterCircleRadiusProgress, 0.5, 1
         );
 
+        /**
+         *  public class ArgbEvaluator implements TypeEvaluator
+         *  public Object evaluate(float fraction, Object startValue, Object endValue)
+         *
+         * 【colorProgress】是一个【fraction】
+         */
         //转换映射控件
         colorProgress = (float) ProAnimUtils.mapValueFromRangeToRange(
                 colorProgress, 0.5f, 1f, 0f, 1f
         );
-        mCirclePaint.setColor((Integer) mArgbEvaluator.evaluate(colorProgress, START_COLOR, END_COLOR));
+        /**
+         * 【mOuterCircleRadiusProgress】在0.5之前，【mCirclePaint.setColor】都是红色，之后会由红色0向黄色过度。
+         * 即先红色一会，再转黄色。
+         * 【mapValueFromRangeToRange】是使得颜色过度平滑<0~1>，而不是已经转了一般黄色的红色想黄色转<0.5~1>.
+         * 把擦除效果的圆屏蔽了就能看到效果了。
+         */
+        mCirclePaint.setColor((Integer) mArgbEvaluator.evaluate(colorProgress, START_COLOR_RED, END_COLOR_ORANGE));
     }
 
 
@@ -192,6 +220,8 @@ public class CircleView extends View {
     //---------------------------------------------------
 
     /**
+     * （似乎是）Property作为中介传递数据。
+     * <p/>
      * 问题是：ObjectAnimator是如何获取自定义属性名的。
      * <p/>
      * public static <T> ObjectAnimator ofFloat( T target,   Property<T, Float> property,   float... values)
