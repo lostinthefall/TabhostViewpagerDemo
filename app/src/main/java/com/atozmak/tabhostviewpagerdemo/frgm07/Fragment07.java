@@ -27,12 +27,12 @@ public class Fragment07 extends Fragment {
         likeButtonView.setOnLikeCLickListener(new OnLikeClickListener() {
             @Override
             public void onYellowStar() {
-                Toast.makeText(Fragment07.this.getActivity(), "onYellowStar", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Fragment07.this.getActivity(), "onYellowStar", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onGreyStar() {
-                Toast.makeText(Fragment07.this.getActivity(), "onGreyStar", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Fragment07.this.getActivity(), "onGreyStar", Toast.LENGTH_SHORT).show();
             }
         });
 

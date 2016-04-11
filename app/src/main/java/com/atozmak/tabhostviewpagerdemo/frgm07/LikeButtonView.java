@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -187,8 +188,10 @@ public class LikeButtonView extends FrameLayout implements View.OnClickListener 
              * DotsView
              */
             ObjectAnimator dotsAnimator = ObjectAnimator.ofFloat(mDvDots, DotsView.DOTS_PROGRESS, 0, 1f);
-            dotsAnimator.setDuration(900);
+//            dotsAnimator.setDuration(2900);
+                       dotsAnimator.setDuration(900);
             dotsAnimator.setStartDelay(50);
+//            dotsAnimator.setInterpolator(new LinearInterpolator()); //用【LinearInterpolator】就没有弹射的效果。
             dotsAnimator.setInterpolator(mAccelerateDecelerateInterpolator);
 
 
