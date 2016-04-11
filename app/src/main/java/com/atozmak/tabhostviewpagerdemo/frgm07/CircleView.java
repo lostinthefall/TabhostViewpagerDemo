@@ -104,8 +104,10 @@ public class CircleView extends View {
          * 即使在xml文件中也改变不了背景色。还是黑色
          *
          * mTempCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
+         *
+         * 如果没有这句的话，会出现：双击的时候会卡住一个圆，没有被擦除。
          */
-        //  mTempCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
+        mTempCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
 
         mTempCanvas.drawCircle(
                 getWidth() / 2,

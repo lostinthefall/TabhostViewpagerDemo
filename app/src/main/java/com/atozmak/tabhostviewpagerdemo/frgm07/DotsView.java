@@ -18,10 +18,10 @@ public class DotsView extends View {
     private static final int DOTS_COUNT = 7;
     private static final int OUTER_DOTS_POSITION_ANGLE = 51;
 
-    private static final int COLOR_1 = 0xffffc107;
-    private static final int COLOR_2 = 0xffff9800;
-    private static final int COLOR_3 = 0xffff5722;
-    private static final int COLOR_4 = 0xfff44336;
+    private static final int COLOR_1 = 0xffffc107;//橙色
+    private static final int COLOR_2 = 0xffff9800;//橙带红
+    private static final int COLOR_3 = 0xffff5722;//橙带更红
+    private static final int COLOR_4 = 0xfff44336;//红
 
     private final Paint[] mCirclePaints = new Paint[4];
 
